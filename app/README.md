@@ -54,3 +54,26 @@ git branch -D dev
 
 # 18. Hủy bỏ trạng thái chờ
 git reset
+
+# 19. Push lên nhánh test
+git commit -m "chore: cleanup node_modules and update project structure"
+git push origin test --force
+
+# 1. Commit và Push lên nhánh test (Vì bạn đang ở nhánh test)
+git commit -m "chore: clean up node_modules and fix gitignore structure"
+git push origin test --force
+
+# 2. Đồng bộ sang nhánh dev (nhánh ổn định hơn)
+git checkout dev
+git merge test
+git push origin dev
+
+# 3. Đồng bộ sang nhánh main (chỉ để lại README)
+# Lưu ý: Vì main chỉ để README, bạn có thể dùng lệnh xóa file trên nhánh này
+git checkout main
+# (Thực hiện xóa các folder backend/app nếu main chỉ muốn giữ README)
+
+
+git checkout test
+git pull origin test
+git checkout -b feature/auth-rbac

@@ -1,14 +1,16 @@
 const path = require('path');
 const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./backend/src/config/swagger');
-const cors = require('cors');
 const globalErrorHandler = require('./backend/src/middlewares/errorMiddleware');
 const AppError = require('./backend/src/utils/AppError');
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
