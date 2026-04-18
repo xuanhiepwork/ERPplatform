@@ -39,3 +39,6 @@ git commit -m "feat: push current source code to test branch for continuous deve
 
 # 13. Push lên nhánh test
 git push -u origin test
+
+# 14. Gỡ bỏ tất cả các file đang bị theo dõi khỏi Cache của Git
+git rm -r --cached .
