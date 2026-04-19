@@ -68,3 +68,17 @@ exports.activityRules = [
     body('activity_type').isIn(['Call', 'Email', 'Meeting', 'Note']).withMessage('Loại hoạt động không hợp lệ.'),
     body('description').notEmpty().withMessage('Vui lòng nhập nội dung ghi chú.')
 ];
+
+// 9. Rules cho Dự án (Projects)
+exports.projectRules = [
+    body('name').notEmpty().withMessage('Tên dự án không được để trống.'),
+    body('start_date').optional().isISO8601().withMessage('Ngày bắt đầu không hợp lệ.'),
+    body('end_date').optional().isISO8601().withMessage('Ngày kết thúc không hợp lệ.')
+];
+
+// 10. Rules cho Công việc (Tasks)
+exports.taskRules = [
+    body('project_id').isInt().withMessage('ID Dự án phải là số.'),
+    body('title').notEmpty().withMessage('Tiêu đề task không được để trống.'),
+    body('priority').isIn(['Low', 'Medium', 'High', 'Urgent']).withMessage('Mức độ ưu tiên không hợp lệ.')
+];
