@@ -49,3 +49,22 @@ exports.payrollRules = [
     body('month').isInt({ min: 1, max: 12 }).withMessage('Tháng phải là số từ 1 đến 12.'),
     body('year').isInt({ min: 2000, max: 2100 }).withMessage('Năm không hợp lệ.')
 ];
+
+// 6. Rules cho Đối tác (Partners)
+exports.partnerRules = [
+    body('name').notEmpty().withMessage('Tên công ty đối tác không được để trống.'),
+    body('email').optional().isEmail().withMessage('Email đối tác không hợp lệ.')
+];
+
+// 7. Rules cho Cơ hội kinh doanh (Deals)
+exports.dealRules = [
+    body('partner_id').isInt().withMessage('ID đối tác phải là số nguyên.'),
+    body('name').notEmpty().withMessage('Tên Deal không được để trống.'),
+    body('expected_revenue').optional().isFloat({ min: 0 }).withMessage('Doanh thu dự kiến phải là số dương.')
+];
+
+// 8. Rules cho Hoạt động (Deal Activities)
+exports.activityRules = [
+    body('activity_type').isIn(['Call', 'Email', 'Meeting', 'Note']).withMessage('Loại hoạt động không hợp lệ.'),
+    body('description').notEmpty().withMessage('Vui lòng nhập nội dung ghi chú.')
+];
