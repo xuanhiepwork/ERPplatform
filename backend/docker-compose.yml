@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  # 1. Dịch vụ Database (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: erp_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ERPplatform_database
+    ports:
+      - "3307:3306" # Ánh xạ port 3307 bên ngoài vào 3306 bên trong (tránh trùng port nếu VPS đã có MySQL)
+    volumes:
+      - db_data:/var/lib/mysql # Lưu trữ dữ liệu vĩnh viễn, server sập không mất data
+    command: --default-authentication-plugin=mysql_native_password
+
+  # 2. Dịch vụ Backend (Node.js)
+  app:
+    build: .
+    container_name: erp_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db # Đảm bảo DB chạy lên trước thì App mới chạy
+    environment:
+      - PORT=3000
+      - DB_HOST=db # Trỏ thẳng vào tên service của MySQL bên trên
+      - DB_PORT=3306 # Trong mạng nội bộ Docker, MySQL vẫn chạy port 3306
+      - DB_USER=root
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=ERPplatform_database
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=1d
+    volumes:
+      - ./uploads:/app/uploads # Đồng bộ thư mục uploads ra ngoài VPS để không bị mất ảnh
+
+volumes:
+  db_data:
