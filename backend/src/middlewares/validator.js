@@ -82,3 +82,10 @@ exports.taskRules = [
     body('title').notEmpty().withMessage('Tiêu đề task không được để trống.'),
     body('priority').isIn(['Low', 'Medium', 'High', 'Urgent']).withMessage('Mức độ ưu tiên không hợp lệ.')
 ];
+
+// 11. Rules cho Marketing Campaigns
+exports.campaignRules = [
+    body('title').notEmpty().withMessage('Tiêu đề bài đăng/chiến dịch không được để trống.'),
+    body('channel').isIn(['Facebook', 'YouTube', 'Email', 'Website', 'Event', 'Other']).withMessage('Kênh truyền thông không hợp lệ.'),
+    body('publish_date').optional().isISO8601().withMessage('Ngày lên bài không đúng định dạng.')
+];
