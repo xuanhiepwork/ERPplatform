@@ -55,6 +55,8 @@ my-backend-api/
 # RUN 
 ```bash
 node server.js
+npm run dev
+npm start
 ```
 
 

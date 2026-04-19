@@ -1,7 +1,7 @@
 const { db } = require('../config/db');
-const catchAsync = require('../util/catchAsync');
-const AppError = require('../util/AppError');
-const AuditLogger = require('../util/auditLogger');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/AppError');
+const AuditLogger = require('../utils/auditLogger');
 
 // Lấy thông tin cá nhân của chính mình (My Profile)
 exports.getMe = catchAsync(async (req, res, next) => {

@@ -77,3 +77,10 @@ git checkout main
 git checkout test
 git pull origin test
 git checkout -b feature/auth-rbac
+
+# 1. Gỡ cài đặt các gói ở root
+npm uninstall helmet express-validator
+
+# 2. Xóa bỏ node_modules ở root (nếu còn) để tránh nhầm lẫn
+# Windows (PowerShell):
+rm -Recurse -Force node_modules, package-lock.json

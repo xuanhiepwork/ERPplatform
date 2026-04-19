@@ -3,7 +3,7 @@ const { db } = require('../config/db');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 // const bcrypt = require('bcrypt'); // Bỏ comment dòng này khi bạn dùng bcrypt
-const AuditLogger = require('../util/auditLogger');
+const AuditLogger = require('../utils/auditLogger');
 
 exports.login = catchAsync(async (req, res, next) => {
     const { email, password } = req.body;

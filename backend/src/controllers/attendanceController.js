@@ -45,3 +45,32 @@ exports.checkOut = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
+// Lấy bảng công cá nhân theo tháng và năm
+exports.getMyTimesheet = catchAsync(async (req, res, next) => {
+    const userId = req.user.id;
+    const { month, year } = req.query; // Lấy từ query string: ?month=4&year=2026
+
+    if (!month || !year) {
+        return next(new AppError('Vui lòng cung cấp tháng và năm!', 400));
+    }
+
+    // Query lấy tất cả log chấm công của user trong tháng đó
+    const query = `
+        SELECT id, check_in, check_out, status, work_mode, location_data
+        FROM attendance_logs
+        WHERE user_id = ? 
+          AND MONTH(check_in) = ? 
+          AND YEAR(check_in) = ?
+          AND deleted_at IS NULL
+        ORDER BY check_in ASC
+    `;
+
+    const [rows] = await db.query(query, [userId, month, year]);
+
+    res.status(200).json({
+        success: true,
+        results: rows.length,
+        data: rows
+    });
+});
