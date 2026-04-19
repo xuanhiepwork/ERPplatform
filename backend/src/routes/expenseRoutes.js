@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 const expenseController = require('../controllers/expenseController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const { validate, expenseRules } = require('../middlewares/validator'); // Import validator
 
-// Chỉ nhân viên đã đăng nhập mới được tạo/xem đơn claim chi phí
 router.use(authMiddleware.verifyToken);
 
 router.route('/')
     .get(expenseController.getMyExpenseClaims)
-    .post(expenseController.createExpenseClaim);
+    .post(
+        expenseRules, // 1. Kiểm tra luật
+        validate,     // 2. Chặn lại
+        expenseController.createExpenseClaim
+    );
 
 module.exports = router;
