@@ -16,6 +16,8 @@ const employeeRoutes = require('./src/routes/employeeRoutes');
 const departmentRoutes = require('./src/routes/departmentRoutes');
 const attendanceRoutes = require('./src/routes/attendanceRoutes');
 const approvalRoutes = require('./src/routes/approvalRoutes');
+const leaveRoutes = require('./src/routes/leaveRoutes');
+const expenseRoutes = require('./src/routes/expenseRoutes');
 
 const app = express();
 
@@ -34,6 +36,8 @@ app.use('/api/v1/employees', employeeRoutes);
 app.use('/api/v1/departments', departmentRoutes);
 app.use('/api/v1/attendance', attendanceRoutes);
 app.use('/api/v1/approvals', approvalRoutes);
+app.use('/api/v1/leaves', leaveRoutes);
+app.use('/api/v1/expenses', expenseRoutes);
 
 app.use((req, res, next) => {
     next(new AppError(`Không thể tìm thấy đường dẫn ${req.originalUrl} trên máy chủ!`, 404));
