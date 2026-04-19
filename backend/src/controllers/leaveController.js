@@ -63,6 +63,14 @@ exports.createLeaveRequest = catchAsync(async (req, res, next) => {
             new_values: req.body
         });
 
+        // 🟢 BẮN SOCKET TỚI FRONTEND TẠI ĐÂY 🟢
+        req.io.emit('new_approval_request', {
+            approver_id: approver_id, // Để Frontend biết ai cần nhận thông báo này
+            requester_id: userId,
+            entity_type: 'Leave_Request',
+            message: 'Bạn có một đơn xin nghỉ phép mới cần phê duyệt!'
+        });
+
         res.status(201).json({
             success: true,
             message: 'Đã tạo đơn xin nghỉ phép và gửi yêu cầu phê duyệt thành công!',
