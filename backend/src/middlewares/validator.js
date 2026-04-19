@@ -89,3 +89,21 @@ exports.campaignRules = [
     body('channel').isIn(['Facebook', 'YouTube', 'Email', 'Website', 'Event', 'Other']).withMessage('Kênh truyền thông không hợp lệ.'),
     body('publish_date').optional().isISO8601().withMessage('Ngày lên bài không đúng định dạng.')
 ];
+
+// 12. Rules cho Bảng tin & Bình luận
+exports.postRules = [
+    body('content').notEmpty().withMessage('Nội dung bài đăng không được để trống.')
+];
+exports.commentRules = [
+    body('content').notEmpty().withMessage('Nội dung bình luận không được để trống.')
+];
+
+// 13. Rules cho Wiki
+exports.wikiCategoryRules = [
+    body('name').notEmpty().withMessage('Tên danh mục không được để trống.')
+];
+exports.wikiArticleRules = [
+    body('category_id').isInt().withMessage('ID danh mục phải là số.'),
+    body('title').notEmpty().withMessage('Tiêu đề bài viết không được để trống.'),
+    body('content').notEmpty().withMessage('Nội dung bài viết không được để trống.')
+];
