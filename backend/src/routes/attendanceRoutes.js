@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const attendanceController = require('../controllers/attendanceController');
 const authMiddleware = require('../middlewares/authMiddleware');
+router.get('/my-timesheet', attendanceController.getMyTimesheet);
 
 router.use(authMiddleware.verifyToken);
 

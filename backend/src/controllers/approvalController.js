@@ -26,7 +26,7 @@ exports.handleAction = catchAsync(async (req, res, next) => {
         );
         // Cập nhật trạng thái bảng gốc (ví dụ: bảng leave_requests)
         await db.query(`UPDATE ${currentApproval.entity_type} SET status = "Rejected" WHERE id = ?`, [currentApproval.entity_id]);
-        
+
         return res.status(200).json({ success: true, message: 'Đã từ chối đơn thành công.' });
     }
 
@@ -49,10 +49,10 @@ exports.handleAction = catchAsync(async (req, res, next) => {
         // Đây là bước cuối cùng -> Duyệt hoàn tất
         await db.query('UPDATE approval_requests SET status = "Approved", updated_at = NOW() WHERE id = ?', [approval_id]);
         await db.query(`UPDATE ${currentApproval.entity_type} SET status = "Approved" WHERE id = ?`, [currentApproval.entity_id]);
-        
+
         // GỌI LOGIC ĐẶC THÙ: Ví dụ nếu là đơn nghỉ phép thì trừ ngày phép, nếu là lương thì khóa bảng lương.
         if (currentApproval.entity_type === 'Leave_Request') {
-             // Logic trừ ngày phép...
+            // Logic trừ ngày phép...
         }
     }
 
@@ -63,4 +63,50 @@ exports.handleAction = catchAsync(async (req, res, next) => {
     );
 
     res.status(200).json({ success: true, message: 'Thao tác phê duyệt hoàn tất.' });
+});
+
+// 1. API: Lấy danh sách các đơn ĐANG CHỜ TÔI DUYỆT
+exports.getMyPendingApprovals = catchAsync(async (req, res, next) => {
+    const myId = req.user.id;
+
+    const query = `
+        SELECT a.id as approval_id, a.entity_type, a.entity_id, a.level, a.status, a.created_at,
+               u.full_name as requester_name, u.email as requester_email
+        FROM approval_requests a
+        JOIN users u ON a.requester_id = u.id
+        WHERE a.current_approver_id = ? AND a.status = 'Pending'
+        ORDER BY a.created_at DESC
+    `;
+    const [requests] = await db.query(query, [myId]);
+
+    res.status(200).json({
+        success: true,
+        results: requests.length,
+        data: requests
+    });
+});
+
+// 2. API (Dùng chung): Tạo một yêu cầu phê duyệt mới
+// Hàm này thường được gọi TỪ BÊN TRONG các controller khác (Ví dụ: khi nhân viên tạo LeaveRequest)
+// Nhưng ta cũng có thể viết thành API nếu muốn test
+exports.submitApproval = catchAsync(async (req, res, next) => {
+    const requester_id = req.user.id;
+    const { entity_type, entity_id, current_approver_id } = req.body;
+
+    if (!entity_type || !entity_id || !current_approver_id) {
+        return next(new AppError('Thiếu thông tin để tạo luồng phê duyệt', 400));
+    }
+
+    const query = `
+        INSERT INTO approval_requests (entity_type, entity_id, requester_id, current_approver_id, level, status)
+        VALUES (?, ?, ?, ?, 1, 'Pending')
+    `;
+
+    const [result] = await db.query(query, [entity_type, entity_id, requester_id, current_approver_id]);
+
+    res.status(201).json({
+        success: true,
+        message: 'Đã gửi yêu cầu phê duyệt thành công.',
+        data: { approval_id: result.insertId }
+    });
 });
