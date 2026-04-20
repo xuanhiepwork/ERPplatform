@@ -105,3 +105,13 @@ Hiện tại, Backend của bạn đã có đủ:
 ✅ Bắn thông báo Real-time với Socket.io.
 ✅ Logic chốt lương cuối tháng tự động gom dữ liệu.
 ✅ Hệ thống "mắt thần" AuditLogger ghi nhận mọi thao tác.
+
+
+# Connect to Oracle's Server:
+cd "D:\practiceCode\Uni\OracleServer\key"
+ssh -i "ssh-key-2026-04-20.key" ubuntu@147.224.134.26
+
+# Bật Database và Backend lên
+cd ~/ERPplatform/backend
+docker-compose up -d
+docker ps

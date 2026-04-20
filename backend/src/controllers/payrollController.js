@@ -3,11 +3,6 @@ const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
 const AuditLogger = require('../utils/auditLogger');
 
-const { db } = require('../config/db');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/AppError');
-const AuditLogger = require('../utils/auditLogger');
-
 // 1. Dành cho HR/Kế toán: Chạy tính lương nháp cho toàn công ty
 exports.generateMonthlyPayrollDraft = catchAsync(async (req, res, next) => {
     const { month, year } = req.body;
