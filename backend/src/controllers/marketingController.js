@@ -107,3 +107,16 @@ exports.searchAssets = catchAsync(async (req, res, next) => {
     const [assets] = await db.query(query, queryParams);
     res.status(200).json({ success: true, results: assets.length, data: assets });
 });
+
+exports.getMarketingEfficiency = catchAsync(async (req, res, next) => {
+    const [stats] = await db.query(`
+        SELECT 
+            (SELECT SUM(amount) FROM marketing_budgets) as total_spent,
+            (SELECT COUNT(*) FROM deals WHERE status = 'Closed_Won') as deals_won
+    `);
+
+    const { total_spent, deals_won } = stats[0];
+    const cac = deals_won > 0 ? (total_spent / deals_won) : 0;
+
+    res.status(200).json({ success: true, data: { total_spent, deals_won, cac } });
+});

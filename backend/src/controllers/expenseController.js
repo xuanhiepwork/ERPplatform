@@ -90,3 +90,20 @@ exports.createExpenseClaim = catchAsync(async (req, res, next) => {
         connection.release(); // Luôn luôn phải trả connection lại cho Pool
     }
 });
+
+exports.createExpenseClaim = catchAsync(async (req, res, next) => {
+    const { amount, reason } = req.body;
+    let status = 'Pending_Manager';
+
+    // Logic phê duyệt đa cấp
+    if (amount > 5000000) {
+        status = 'Pending_Founder'; // Tự động đẩy lên bàn Sếp tổng
+    }
+
+    const [newClaim] = await db.query(
+        'INSERT INTO expense_claims (user_id, amount, reason, status) VALUES (?, ?, ?, ?)',
+        [req.user.id, amount, reason, status]
+    );
+
+    res.status(201).json({ success: true, data: newClaim });
+});
