@@ -24,6 +24,7 @@ const pmRoutes = require('./src/routes/pmRoutes');
 const marketingRoutes = require('./src/routes/marketingRoutes');
 const commsRoutes = require('./src/routes/commsRoutes');
 const paymentRoutes = require('./src/routes/paymentRoutes');
+const financeRouter = require('./src/routes/financeRoutes');
 
 const app = express();
 
@@ -50,6 +51,7 @@ app.use('/api/v1/pm', pmRoutes);
 app.use('/api/v1/marketing', marketingRoutes);
 app.use('/api/v1/comms', commsRoutes);
 app.use('/api/v1/payments', paymentRoutes);
+app.use('/api/v1/finance', financeRouter);
 
 app.use((req, res, next) => {
     next(new AppError(`Không thể tìm thấy đường dẫn ${req.originalUrl} trên máy chủ!`, 404));
