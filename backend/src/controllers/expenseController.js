@@ -25,85 +25,77 @@ exports.getMyExpenseClaims = catchAsync(async (req, res, next) => {
 // 2. Tạo yêu cầu thanh toán (Expense Claim) MỚI & Gửi cho Quản lý/Kế toán duyệt
 exports.createExpenseClaim = catchAsync(async (req, res, next) => {
     const userId = req.user.id;
+    // Thống nhất dùng 'description' hoặc 'reason', ở đây mình dùng description theo chuẩn bảng của bạn
     const { amount, description, receipt_url, approver_id } = req.body;
 
-    // 1. Kiểm tra đầu vào (Validation cơ bản)
+    // 1. Validation nghiêm ngặt
     if (!amount || !description || !approver_id) {
-        return next(new AppError('Vui lòng cung cấp đủ: số tiền (amount), mô tả (description) và người duyệt (approver_id).', 400));
+        return next(new AppError('Thiếu thông tin: Số tiền, mô tả hoặc người duyệt.', 400));
     }
 
     if (amount <= 0) {
-        return next(new AppError('Số tiền yêu cầu thanh toán phải lớn hơn 0.', 400));
+        return next(new AppError('Số tiền phải lớn hơn 0.', 400));
     }
 
-    // * Khởi tạo Transaction để bảo vệ luồng tiền
+    // 2. Xác định trạng thái dựa trên số tiền (Logic PM)
+    let initialStatus = 'Pending_Manager';
+    if (amount > 5000000) {
+        initialStatus = 'Pending_Founder';
+    }
+
+    // 3. Khởi tạo Transaction
     const connection = await db.getConnection();
     await connection.beginTransaction();
 
     try {
-        // 2. Lưu đơn vào bảng expense_claims (Trạng thái mặc định: Pending)
+        // BƯỚC A: Lưu đơn vào bảng expense_claims
         const insertExpenseQuery = `
             INSERT INTO expense_claims (user_id, amount, description, receipt_url, status)
-            VALUES (?, ?, ?, ?, 'Pending')
+            VALUES (?, ?, ?, ?, ?)
         `;
-        const [expenseResult] = await connection.query(insertExpenseQuery, [userId, amount, description, receipt_url || null]);
+        const [expenseResult] = await connection.query(insertExpenseQuery, [
+            userId,
+            amount,
+            description,
+            receipt_url || null,
+            initialStatus
+        ]);
         const expenseId = expenseResult.insertId;
 
-        // 3. Đẩy đơn này vào "Động cơ Phê duyệt" (Bảng approval_requests)
-        // Lưu ý entity_type là 'Expense_Claim'
+        // BƯỚC B: Đẩy đơn vào Động cơ Phê duyệt (Bảng approval_requests)
         const insertApprovalQuery = `
             INSERT INTO approval_requests (entity_type, entity_id, requester_id, current_approver_id, level, status)
             VALUES ('Expense_Claim', ?, ?, ?, 1, 'Pending')
         `;
         await connection.query(insertApprovalQuery, [expenseId, userId, approver_id]);
 
-        // 4. Chốt Transaction (Lưu cả 2 bảng cùng lúc)
+        // 4. CHỐT TRANSACTION
         await connection.commit();
 
-        // 5. Ghi log Audit (Rất quan trọng với luồng tài chính)
+        // 5. Ghi Audit Log & Bắn Socket (Sau khi commit thành công)
         AuditLogger.log(req, {
             action: 'INSERT',
             table_name: 'expense_claims',
             entity_id: expenseId,
-            new_values: req.body
+            new_values: { amount, description, initialStatus }
         });
 
-        // 🟢 BẮN SOCKET TỚI FRONTEND TẠI ĐÂY 🟢
         req.io.emit('new_approval_request', {
             approver_id: approver_id,
-            requester_id: userId,
-            entity_type: 'Expense_Claim',
-            message: `Bạn có một yêu cầu thanh toán chi phí trị giá ${amount.toLocaleString('vi-VN')} VND cần duyệt!`
+            message: `Yêu cầu thanh toán ${amount.toLocaleString('vi-VN')}đ đang chờ bạn duyệt! (${initialStatus})`
         });
 
+        // TRẢ VỀ KẾT QUẢ DUY NHẤT TẠI ĐÂY
         res.status(201).json({
             success: true,
-            message: 'Đã tạo yêu cầu thanh toán và gửi cho người quản lý duyệt thành công!',
-            data: { expense_id: expenseId, amount: amount }
+            message: 'Đã tạo yêu cầu và gửi luồng phê duyệt thành công!',
+            data: { expense_id: expenseId, amount }
         });
 
     } catch (error) {
-        // Nếu có lỗi, Rollback toàn bộ để không bị mất tiền oan hoặc sinh ra dữ liệu rác
         await connection.rollback();
-        return next(new AppError('Đã có lỗi xảy ra khi tạo yêu cầu thanh toán: ' + error.message, 500));
+        return next(new AppError('Lỗi hệ thống khi tạo yêu cầu: ' + error.message, 500));
     } finally {
-        connection.release(); // Luôn luôn phải trả connection lại cho Pool
+        connection.release();
     }
-});
-
-exports.createExpenseClaim = catchAsync(async (req, res, next) => {
-    const { amount, reason } = req.body;
-    let status = 'Pending_Manager';
-
-    // Logic phê duyệt đa cấp
-    if (amount > 5000000) {
-        status = 'Pending_Founder'; // Tự động đẩy lên bàn Sếp tổng
-    }
-
-    const [newClaim] = await db.query(
-        'INSERT INTO expense_claims (user_id, amount, reason, status) VALUES (?, ?, ?, ?)',
-        [req.user.id, amount, reason, status]
-    );
-
-    res.status(201).json({ success: true, data: newClaim });
 });
