@@ -84,3 +84,25 @@ npm uninstall helmet express-validator
 # 2. Xóa bỏ node_modules ở root (nếu còn) để tránh nhầm lẫn
 # Windows (PowerShell):
 rm -Recurse -Force node_modules, package-lock.json
+
+
+---
+
+# PUSH CODE:
+git checkout test
+git pull origin test
+git checkout -b feature/approvals-cron
+
+# Thêm code và đẩy lên
+git add .
+git commit -m "feat: implement daily attendance cron job and approval engine routes"
+git push origin feature/approvals-cron
+
+# Merge vào test
+git checkout test
+git merge feature/approvals-cron
+git push origin test
+
+---
+
+# 

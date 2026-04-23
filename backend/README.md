@@ -115,3 +115,13 @@ ssh -i "ssh-key-2026-04-20.key" ubuntu@147.224.134.26
 cd ~/ERPplatform/backend
 docker-compose up -d
 docker ps
+
+# Bật ngrok lên
+cd ~/ERPplatform/backend
+.\ngrok.exe config add-authtoken 3CkZcLZmjoGaHe1TfunyYUCY5Ya_48zTkQ4N5NiUdYQGkFG2t
+
+# Account Admin
+{
+    "email": "xuanhiep.ht4f@gmail.com",
+    "password": "Hiepcute2@"
+}
