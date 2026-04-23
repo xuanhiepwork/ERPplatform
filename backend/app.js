@@ -2,9 +2,9 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const bodyParser = require('body-parser');
-const swaggerUi = require('swagger-ui-express');
+// const bodyParser = require('body-parser'); // Có thể gỡ bỏ thư viện này để giảm nhẹ node_modules
 
+const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./src/config/swagger');
 const AppError = require('./src/utils/AppError');
 const globalErrorHandler = require('./src/middlewares/errorMiddleware');
@@ -22,22 +22,25 @@ const payrollRoutes = require('./src/routes/payrollRoutes');
 const bdRoutes = require('./src/routes/bdRoutes');
 const pmRoutes = require('./src/routes/pmRoutes');
 const marketingRoutes = require('./src/routes/marketingRoutes');
-const commsRoutes = require('./src/routes/commsRoutes');
+const commsRoutes = require('./src/routes/commsRoutes'); // Giữ lại 1 cái duy nhất
 const paymentRoutes = require('./src/routes/paymentRoutes');
 const financeRouter = require('./src/routes/financeRoutes');
 const taskRouter = require('./src/routes/taskRoutes');
 
 const app = express();
 
+// 3. Middlewares
 app.use(helmet());
 app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json({ limit: '10kb' })); // Giới hạn size để tránh tấn công DoS
+app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static('uploads'));
 
+// 4. Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// 5. Mounting Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/employees', employeeRoutes);
@@ -55,10 +58,11 @@ app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/finance', financeRouter);
 app.use('/api/v1/tasks', taskRouter);
 
-app.use((req, res, next) => {
+// 6. Error Handling
+app.all('*', (req, res, next) => {
     next(new AppError(`Không thể tìm thấy đường dẫn ${req.originalUrl} trên máy chủ!`, 404));
 });
 
-app.use(globalErrorHandler); //(PHẢI NẰM Ở CUỐI CÙNG)
+app.use(globalErrorHandler); // (PHẢI NẰM Ở CUỐI CÙNG)
 
 module.exports = app;

@@ -1,6 +1,7 @@
 const { db } = require('../config/db');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/AppError');
+const commsService = require('../services/commsService');
 
 // ==========================
 // 1. NEWSFEED (BẢNG TIN)
@@ -121,4 +122,19 @@ exports.getArticleDetail = catchAsync(async (req, res, next) => {
     if (articles.length === 0) return next(new AppError('Không tìm thấy bài viết', 404));
 
     res.status(200).json({ success: true, data: articles[0] });
+});
+
+exports.chatWithWiki = catchAsync(async (req, res, next) => {
+    const { message } = req.body;
+
+    if (!message) return next(new AppError('Vui lòng nhập câu hỏi.', 400));
+
+    const answer = await commsService.askWikiBot(message);
+
+    res.status(200).json({
+        success: true,
+        data: {
+            reply: answer
+        }
+    });
 });
