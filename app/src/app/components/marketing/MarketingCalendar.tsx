@@ -20,9 +20,9 @@ import {
   Linkedin,
   Megaphone
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Button } from './ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Button } from '../ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 type CalendarView = 'month' | 'week';
 type ContentStatus = 'draft' | 'scheduled' | 'published';
@@ -355,8 +355,8 @@ export function MarketingCalendar() {
 
     const filtered = scheduledContent.filter(content => {
       const matchesDate = content.date.getDate() === date.getDate() &&
-                         content.date.getMonth() === date.getMonth() &&
-                         content.date.getFullYear() === date.getFullYear();
+        content.date.getMonth() === date.getMonth() &&
+        content.date.getFullYear() === date.getFullYear();
 
       const matchesCampaign = selectedCampaign === 'All Campaigns' || content.campaign === selectedCampaign;
 
@@ -394,8 +394,8 @@ export function MarketingCalendar() {
     if (!date) return false;
     const today = new Date(2026, 3, 11);
     return date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear();
   };
 
   const filteredUnscheduled = unscheduledIdeas.filter(idea =>
@@ -502,15 +502,13 @@ export function MarketingCalendar() {
                     return (
                       <div
                         key={index}
-                        className={`border-r border-b last:border-r-0 p-2 overflow-y-auto ${
-                          !date ? 'bg-muted/20' : isTodayDate ? 'bg-blue-50' : ''
-                        }`}
+                        className={`border-r border-b last:border-r-0 p-2 overflow-y-auto ${!date ? 'bg-muted/20' : isTodayDate ? 'bg-blue-50' : ''
+                          }`}
                       >
                         {date && (
                           <>
-                            <div className={`text-sm mb-2 flex items-center justify-between ${
-                              isTodayDate ? 'font-bold' : ''
-                            }`}>
+                            <div className={`text-sm mb-2 flex items-center justify-between ${isTodayDate ? 'font-bold' : ''
+                              }`}>
                               <span className={isTodayDate ? 'bg-primary text-primary-foreground w-6 h-6 rounded-full flex items-center justify-center text-xs' : ''}>
                                 {date.getDate()}
                               </span>
@@ -527,9 +525,8 @@ export function MarketingCalendar() {
                                 return (
                                   <div
                                     key={content.id}
-                                    className={`p-2 rounded border cursor-move hover:shadow-sm transition-shadow ${
-                                      channelConfig[content.channel].lightBg
-                                    } ${channelConfig[content.channel].borderColor}`}
+                                    className={`p-2 rounded border cursor-move hover:shadow-sm transition-shadow ${channelConfig[content.channel].lightBg
+                                      } ${channelConfig[content.channel].borderColor}`}
                                   >
                                     <div className="flex items-start gap-1 mb-1">
                                       <GripVertical className="h-3 w-3 text-muted-foreground flex-shrink-0 mt-0.5" />
@@ -573,9 +570,8 @@ export function MarketingCalendar() {
                         <div className="text-sm text-muted-foreground">
                           {date.toLocaleDateString('en-US', { weekday: 'short' })}
                         </div>
-                        <div className={`text-lg mt-1 ${
-                          isTodayDate ? 'bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center mx-auto' : ''
-                        }`}>
+                        <div className={`text-lg mt-1 ${isTodayDate ? 'bg-primary text-primary-foreground w-8 h-8 rounded-full flex items-center justify-center mx-auto' : ''
+                          }`}>
                           {date.getDate()}
                         </div>
                       </div>
@@ -595,9 +591,8 @@ export function MarketingCalendar() {
                           return (
                             <Card
                               key={content.id}
-                              className={`cursor-move hover:shadow-md transition-shadow ${
-                                channelConfig[content.channel].lightBg
-                              } border-l-4 ${channelConfig[content.channel].color}`}
+                              className={`cursor-move hover:shadow-md transition-shadow ${channelConfig[content.channel].lightBg
+                                } border-l-4 ${channelConfig[content.channel].color}`}
                             >
                               <CardContent className="p-3">
                                 <div className="flex items-start gap-2 mb-2">
@@ -665,9 +660,8 @@ export function MarketingCalendar() {
                 return (
                   <Card
                     key={idea.id}
-                    className={`cursor-move hover:shadow-md transition-shadow ${
-                      channelConfig[idea.channel].lightBg
-                    } border-l-4 ${channelConfig[idea.channel].color}`}
+                    className={`cursor-move hover:shadow-md transition-shadow ${channelConfig[idea.channel].lightBg
+                      } border-l-4 ${channelConfig[idea.channel].color}`}
                   >
                     <CardContent className="p-3">
                       <div className="flex items-start gap-2">
