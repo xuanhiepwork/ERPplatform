@@ -126,6 +126,7 @@ export function Sidebar({ isCollapsed, onToggle, activePage, onNavigate, userRol
         return [
           { icon: <UserCheck className="h-5 w-5" />, label: 'Recruitment (ATS)', page: 'ats-dashboard' },
           { icon: <Shield className="h-5 w-5" />, label: 'Core HR Database', page: 'core-hr' },
+          { icon: <FileCheck className="h-5 w-5" />, label: 'Contract Management', page: 'contracts' },
           { icon: <Clock className="h-5 w-5" />, label: 'Time & Attendance', page: 'time-attendance' },
           { icon: <DollarSign className="h-5 w-5" />, label: 'Payroll', page: 'payroll' },
           { icon: <GraduationCap className="h-5 w-5" />, label: 'Learning & Dev', page: 'learning' },

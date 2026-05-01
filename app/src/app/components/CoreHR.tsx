@@ -1,30 +1,8 @@
 import { useState } from 'react';
 import {
-  User,
-  FileText,
-  Building2,
-  Shield,
-  GraduationCap,
-  Briefcase,
-  CreditCard,
-  Phone,
-  Mail,
-  MapPin,
-  Calendar,
-  AlertTriangle,
-  Clock,
-  CheckCircle2,
-  XCircle,
-  Download,
-  Edit,
-  MoreVertical,
-  ChevronRight,
-  ChevronDown,
-  Users,
-  Search,
-  Filter,
-  AlertCircle,
-  Plus,
+  User, FileText, Building2, Shield, GraduationCap, Briefcase, CreditCard, Phone, Mail,
+  MapPin, Calendar, AlertTriangle, Clock, CheckCircle2, XCircle, Download, Edit,
+  MoreVertical, ChevronRight, ChevronDown, Users, Search, Filter, AlertCircle, Plus,
 } from 'lucide-react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
@@ -34,61 +12,16 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Progress } from './ui/progress';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from './ui/table';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuSeparator, DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 import { cn } from './ui/utils';
 
 interface Employee {
-  id: string;
-  name: string;
-  employeeId: string;
-  position: string;
-  department: string;
-  email: string;
-  phone: string;
-  dateOfBirth: string;
-  hireDate: string;
-  status: 'active' | 'inactive';
-  manager: string;
-  location: string;
-  nationality: string;
-  maritalStatus: string;
-  emergencyContact: {
-    name: string;
-    relationship: string;
-    phone: string;
-  };
-  education: {
-    degree: string;
-    institution: string;
-    year: string;
-    field: string;
-  }[];
-  bankDetails: {
-    accountName: string;
-    bankName: string;
-    accountNumber: string;
-    routingNumber: string;
-  };
-  workHistory: {
-    company: string;
-    position: string;
-    startDate: string;
-    endDate: string;
-    description: string;
-  }[];
+
 }
 
 interface Contract {
@@ -113,61 +46,7 @@ interface OrgNode {
 }
 
 const sampleEmployee: Employee = {
-  id: 'emp-001',
-  name: 'Sarah Johnson',
-  employeeId: 'EMP-2024-001',
-  position: 'Senior Software Engineer',
-  department: 'Engineering',
-  email: 'sarah.johnson@company.com',
-  phone: '+1 (555) 123-4567',
-  dateOfBirth: 'March 15, 1990',
-  hireDate: 'January 10, 2020',
-  status: 'active',
-  manager: 'Michael Chen',
-  location: 'San Francisco, CA',
-  nationality: 'United States',
-  maritalStatus: 'Single',
-  emergencyContact: {
-    name: 'Robert Johnson',
-    relationship: 'Father',
-    phone: '+1 (555) 987-6543',
-  },
-  education: [
-    {
-      degree: 'Master of Science',
-      institution: 'Stanford University',
-      year: '2014',
-      field: 'Computer Science',
-    },
-    {
-      degree: 'Bachelor of Science',
-      institution: 'UC Berkeley',
-      year: '2012',
-      field: 'Computer Engineering',
-    },
-  ],
-  bankDetails: {
-    accountName: 'Sarah Johnson',
-    bankName: 'Chase Bank',
-    accountNumber: '****1234',
-    routingNumber: '****5678',
-  },
-  workHistory: [
-    {
-      company: 'Tech Innovations Inc.',
-      position: 'Software Engineer',
-      startDate: 'Jun 2018',
-      endDate: 'Dec 2019',
-      description: 'Developed scalable web applications using React and Node.js',
-    },
-    {
-      company: 'Digital Solutions LLC',
-      position: 'Junior Developer',
-      startDate: 'Jan 2015',
-      endDate: 'May 2018',
-      description: 'Built responsive websites and maintained client databases',
-    },
-  ],
+
 };
 
 const contracts: Contract[] = [
@@ -251,90 +130,7 @@ const contracts: Contract[] = [
 ];
 
 const orgChart: OrgNode = {
-  id: 'ceo',
-  name: 'John Smith',
-  position: 'Chief Executive Officer',
-  department: 'Executive',
-  children: [
-    {
-      id: 'cto',
-      name: 'Michael Chen',
-      position: 'Chief Technology Officer',
-      department: 'Engineering',
-      memberCount: 12,
-      children: [
-        {
-          id: 'eng-lead',
-          name: 'Sarah Johnson',
-          position: 'Engineering Manager',
-          department: 'Engineering',
-          memberCount: 8,
-        },
-        {
-          id: 'qa-lead',
-          name: 'David Kim',
-          position: 'QA Lead',
-          department: 'Quality Assurance',
-          memberCount: 4,
-        },
-      ],
-    },
-    {
-      id: 'cmo',
-      name: 'Maria Garcia',
-      position: 'Chief Marketing Officer',
-      department: 'Marketing',
-      memberCount: 8,
-      children: [
-        {
-          id: 'marketing-mgr',
-          name: 'Emily White',
-          position: 'Marketing Manager',
-          department: 'Marketing',
-          memberCount: 5,
-        },
-        {
-          id: 'content-lead',
-          name: 'James Brown',
-          position: 'Content Lead',
-          department: 'Content',
-          memberCount: 3,
-        },
-      ],
-    },
-    {
-      id: 'cfo',
-      name: 'Robert Davis',
-      position: 'Chief Financial Officer',
-      department: 'Finance',
-      memberCount: 6,
-      children: [
-        {
-          id: 'accounting',
-          name: 'Lisa Anderson',
-          position: 'Accounting Manager',
-          department: 'Accounting',
-          memberCount: 4,
-        },
-      ],
-    },
-    {
-      id: 'chro',
-      name: 'Jessica Park',
-      position: 'Chief HR Officer',
-      department: 'Human Resources',
-      memberCount: 5,
-      children: [
-        {
-          id: 'hr-ops',
-          name: 'Alex Thompson',
-          position: 'HR Operations Lead',
-          department: 'HR Operations',
-          memberCount: 3,
-        },
-      ],
-    },
-  ],
+
 };
 
 function EProfileView({ employee }: { employee: Employee }) {
@@ -740,8 +536,8 @@ function ContractManagement({ contracts }: { contracts: Contract[] }) {
                     contract.daysUntilExpiry <= 30
                       ? 'border-l-red-500 bg-red-50'
                       : contract.daysUntilExpiry <= 60
-                      ? 'border-l-orange-500 bg-orange-50'
-                      : 'border-l-yellow-500 bg-yellow-50'
+                        ? 'border-l-orange-500 bg-orange-50'
+                        : 'border-l-yellow-500 bg-yellow-50'
                   )}
                 >
                   <div className="flex items-start justify-between mb-3">
@@ -803,8 +599,8 @@ function OrgNodeComponent({ node, level }: OrgNodeProps) {
           level === 0
             ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white border-blue-600'
             : level === 1
-            ? 'bg-gradient-to-br from-purple-50 to-purple-100 border-purple-300'
-            : 'bg-white border-gray-200'
+              ? 'bg-gradient-to-br from-purple-50 to-purple-100 border-purple-300'
+              : 'bg-white border-gray-200'
         )}
         onClick={() => hasChildren && setIsExpanded(!isExpanded)}
       >
@@ -815,8 +611,8 @@ function OrgNodeComponent({ node, level }: OrgNodeProps) {
                 level === 0
                   ? 'bg-blue-500 text-white'
                   : level === 1
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-blue-100 text-blue-600'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-blue-100 text-blue-600'
               )}
             >
               {node.name

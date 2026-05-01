@@ -238,6 +238,7 @@ import { ProjectManagerDashboard } from './components/ProjectManagerDashboard';
 import { MarketingLeadDashboard } from './components/MarketingLeadDashboard';
 import { EmployeeDashboard } from './components/EmployeeDashboard';
 import { ContractDashboard } from './components/contracts/ContractDashboard';
+import { HRDashboard } from './components/hr/HRDashboard';
 
 // 1. Component Layout chính (Bao bọc Sidebar & Header)
 const AppLayout = () => {
@@ -300,6 +301,7 @@ export default function App() {
           <Route path="/overview" element={<RoleBasedOverview onRoleChange={setUserRole} />} />
           <Route path="/dashboard" element={<RoleBasedDashboard />} />
           <Route path="/financial" element={<FinancialDashboard />} />
+          <Route path="/core-hr" element={<HRDashboard />} />
           <Route path="/contracts" element={<ContractDashboard />} />
 
           {/* Thêm các Route khác ở đây, ví dụ: */}
