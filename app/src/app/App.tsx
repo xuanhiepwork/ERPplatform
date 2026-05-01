@@ -237,7 +237,7 @@ import { FinancialDashboard } from './components/finance/FinancialDashboard';
 import { ProjectManagerDashboard } from './components/ProjectManagerDashboard';
 import { MarketingLeadDashboard } from './components/MarketingLeadDashboard';
 import { EmployeeDashboard } from './components/EmployeeDashboard';
-// (Import các component còn lại của bạn ở đây...)
+import { ContractDashboard } from './components/contracts/ContractDashboard';
 
 // 1. Component Layout chính (Bao bọc Sidebar & Header)
 const AppLayout = () => {
@@ -300,6 +300,7 @@ export default function App() {
           <Route path="/overview" element={<RoleBasedOverview onRoleChange={setUserRole} />} />
           <Route path="/dashboard" element={<RoleBasedDashboard />} />
           <Route path="/financial" element={<FinancialDashboard />} />
+          <Route path="/contracts" element={<ContractDashboard />} />
 
           {/* Thêm các Route khác ở đây, ví dụ: */}
           {/* <Route path="/tasks" element={<KanbanBoard />} /> */}

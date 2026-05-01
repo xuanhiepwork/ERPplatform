@@ -146,3 +146,30 @@ src/app/components/finance/
 ├── ProfitAndLossSection.tsx   (Biểu đồ cột P&L và danh sách chi tiết)
 └── FinancialRatios.tsx        (Các thẻ phụ: Operating Margin, Quick Ratio...)
 
+
+---
+
+# Cách push code lên github
+# 1. Tạo và chuyển sang nhánh của bộ phận Finance
+git checkout -b feature/finance/financial-dashboard
+
+# 2. Đưa các file đã sửa vào staging area
+git add .
+
+# 3. Commit với message có tiền tố phòng ban (theo chuẩn Conventional Commits)
+git commit -m "feat(finance): refactor financial dashboard using container-presenter pattern and separate mocks"
+
+# 4. Push nhánh mới lên remote repository
+git push origin feature/finance/financial-dashboard
+
+# 5. Chuyển về nhánh dev (hoặc nhánh chính của bạn)
+git checkout dev
+
+# 6. Kéo code mới nhất về trước khi gộp (tránh xung đột)
+git pull origin dev
+
+# 7. Gộp nhánh tính năng tài chính vào nhánh dev
+git merge feature/finance/financial-dashboard
+
+# 8. Push nhánh dev đã hoàn thiện lên GitHub
+git push origin dev
