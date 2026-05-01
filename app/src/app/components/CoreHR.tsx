@@ -20,9 +20,9 @@ import {
 } from './ui/dropdown-menu';
 import { cn } from './ui/utils';
 
-interface Employee {
+// interface Employee {
 
-}
+// }
 
 interface Contract {
   id: string;
@@ -45,9 +45,9 @@ interface OrgNode {
   memberCount?: number;
 }
 
-const sampleEmployee: Employee = {
+// const sampleEmployee: Employee = {
 
-};
+// };
 
 const contracts: Contract[] = [
   {
@@ -129,9 +129,9 @@ const contracts: Contract[] = [
   },
 ];
 
-const orgChart: OrgNode = {
+// const orgChart: OrgNode = {
 
-};
+// };
 
 function EProfileView({ employee }: { employee: Employee }) {
   return (
