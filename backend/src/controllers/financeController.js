@@ -86,4 +86,30 @@ exports.getCashflowStats = catchAsync(async (req, res, next) => {
             chartData
         }
     });
+
+    // Truy vấn tổng hợp doanh thu theo tháng trong năm hiện tại
+    const query = `
+        SELECT 
+            DATE_FORMAT(createdAt, '%b') AS month,
+            SUM(CASE WHEN status = 'PAID' THEN amount ELSE 0 END) AS revenue,
+            SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) AS expenses -- Nếu bạn có cột type
+        FROM payments 
+        WHERE YEAR(createdAt) = YEAR(CURRENT_DATE())
+        GROUP BY MONTH(createdAt), month
+        ORDER BY MONTH(createdAt) ASC
+    `;
+
+    const [rows] = await db.execute(query);
+
+    // Tính toán thêm netCashflow và operatingCashflow (logic nghiệp vụ)
+    const processedData = rows.map(row => ({
+        ...row,
+        netCashflow: row.revenue - row.expenses,
+        operatingCashflow: (row.revenue - row.expenses) * 0.9 // Giả định chi phí vận hành chiếm 10%
+    }));
+
+    res.status(200).json({
+        status: 'success',
+        data: processedData
+    });
 });

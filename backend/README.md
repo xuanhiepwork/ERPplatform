@@ -80,6 +80,13 @@ git push -f origin main
 git checkout -b dev
 ```
 
+# CẬP NHẬT LÊN NHÁNH MAIN:
+git checkout main
+git merge dev
+git push origin main
+git checkout dev
+
+
 # ADMIN
 admin1
 456
@@ -125,3 +132,17 @@ cd ~/ERPplatform/backend
     "email": "xuanhiep.ht4f@gmail.com",
     "password": "Hiepcute2@"
 }
+
+
+
+
+---
+
+src/app/components/finance/
+├── FinancialDashboard.tsx     (File gốc: Container quản lý State)
+├── DashboardHeader.tsx        (Phần tiêu đề, chọn ngày, xuất báo cáo)
+├── KeyMetricsGrid.tsx         (4 thẻ thống kê: Revenue, Expenses, Net Profit...)
+├── CashflowChart.tsx          (Biểu đồ đường Recharts)
+├── ProfitAndLossSection.tsx   (Biểu đồ cột P&L và danh sách chi tiết)
+└── FinancialRatios.tsx        (Các thẻ phụ: Operating Margin, Quick Ratio...)
+

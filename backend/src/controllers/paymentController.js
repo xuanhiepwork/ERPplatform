@@ -86,3 +86,22 @@ exports.handlePayOSWebhook = catchAsync(async (req, res, next) => {
         res.status(200).json({ success: false, message: 'Invalid Webhook Signature' });
     }
 });
+
+exports.handleWebhook = catchAsync(async (req, res) => {
+    const webhookData = req.body;
+    // ... Kiểm tra checksum/signature của PayOS ...
+
+    if (webhookData.success) {
+        // 1. Cập nhật DB
+        await updateOrderInDB(webhookData.orderCode, 'PAID');
+
+        // 2. Bắn tin Real-time (Sử dụng global socket object)
+        const io = req.app.get('socketio');
+        io.emit('TING_TING_PAYMENT', {
+            amount: webhookData.amount,
+            description: webhookData.description,
+            time: new Date().toLocaleTimeString()
+        });
+    }
+    res.json({ success: true });
+});
