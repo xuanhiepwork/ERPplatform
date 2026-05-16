@@ -147,6 +147,13 @@ src/app/components/finance/
 └── FinancialRatios.tsx        (Các thẻ phụ: Operating Margin, Quick Ratio...)
 
 
+
+features/finance/
+├── api/              # Các hàm useQuery, useMutation riêng cho Finance
+├── components/       # Các Presenter (biểu đồ, bảng, thẻ)
+├── hooks/            # Logic xử lý dữ liệu riêng (nếu có)
+├── types/            # TypeScript Interfaces riêng cho Finance
+└── FinancialDashboard.tsx  # Container chính (Entry point)
 ---
 
 # Cách push code lên github
@@ -173,3 +180,10 @@ git merge feature/finance/financial-dashboard
 
 # 8. Push nhánh dev đã hoàn thiện lên GitHub
 git push origin dev
+
+
+---
+
+# Note các phần cần sửa:
+
+- Chỉ có Human Resource Management mới được tạo tài khoản
