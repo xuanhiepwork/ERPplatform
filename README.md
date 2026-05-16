@@ -192,3 +192,50 @@ Dự án là một hệ thống **AI-Driven ERP** (Enterprise Resource Planning)
 │   ├── scripts/          # Ingestion scripts (Seed Vector DB)
 │   └── uploads/          # Digital Assets & Receipts
 └── erp_platform.sql      # Script khởi tạo toàn bộ hệ thống Database
+
+```
+
+---
+# RUN PROJECT
+## BACKEND
+cd backend
+npm run check
+npm install
+npm run dev
+
+### RESULT
+🚀 Server đang chạy tại http://localhost:3000
+Yessirrr... Kết nối Database MySQL thành công!
+
+
+## APP
+cd app
+npm run check
+npm install
+npm run dev
+
+### RESULT
+http://localhost:5173
+
+
+
+
+### Verification passed:
+
+npm run build in app
+npm run check in backend
+node -e "require('./app')" in backend
+---
+
+# TEST
+- Kiểm tra lại các đường nối của các màn hình của từng role
+  - Marketing
+  - Founder
+  - Business Development
+  - Product & Tech
+  - Finance
+  - Project management
+  - User (người dùng của 1 role)
+  - Manager (người dùng của 1 role, sẽ được add in thêm các quyền riêng biệt)
+  - Phần chung của các nhân viên nội bộ (Employee)
+  

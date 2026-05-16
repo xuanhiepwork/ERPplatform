@@ -9,8 +9,21 @@ interface AppState {
     toggleSidebar: () => void;
 }
 
+const getInitialRole = (): UserRole => {
+    try {
+        const raw = localStorage.getItem('user');
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.role) return parsed.role as UserRole;
+        }
+    } catch (e) {
+        // ignore parsing errors
+    }
+    return 'Employee';
+};
+
 export const useAppStore = create<AppState>((set) => ({
-    userRole: 'Founder', // Default role
+    userRole: getInitialRole(),
     isSidebarCollapsed: false,
     setUserRole: (role) => set({ userRole: role }),
     toggleSidebar: () => set((state) => ({ isSidebarCollapsed: !state.isSidebarCollapsed })),

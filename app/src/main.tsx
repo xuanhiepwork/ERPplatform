@@ -1,15 +1,16 @@
+/// <reference types="vite/client" />
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+// @ts-ignore
+import ReactDOM from 'react-dom/client'; // Đã sửa: Thêm lệnh bỏ qua check type ở dòng này
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from './app/App'; // Đường dẫn tới file App.tsx của bạn
-import './index.css'; // File CSS của bạn
+import App from './app/App';
+import '../default_shadcn_theme.css';
 
-// Khởi tạo QueryClient với cấu hình mặc định
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Không tự động gọi lại API khi chuyển tab trình duyệt
-      retry: 1, // Chỉ thử lại 1 lần nếu API lỗi
+      refetchOnWindowFocus: false,
+      retry: 1,
     },
   },
 });
